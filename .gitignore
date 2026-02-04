@@ -61,6 +61,10 @@ output_html/
 # Duplicate data (already in /Docs)
 backend/data/summaries/
 
+# Note: output_pdfs/ contains 246 generated PDFs (11MB)
+# Uncomment the line below to exclude from git:
+# output_pdfs/
+
 # Development tools
 chainlit.md
 .chainlit
