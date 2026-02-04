@@ -1,0 +1,75 @@
+site_name: ParentWise Book Summaries
+site_url: https://summaries.getparentwise.com
+site_description: Comprehensive parenting book summaries for thoughtful parents
+
+theme:
+  name: material
+  custom_dir: overrides
+  palette:
+    - scheme: slate
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  font:
+    text: -apple-system, BlinkMacSystemFont, SF Pro Display, Segoe UI, Roboto
+    code: SF Mono, Monaco, Cascadia Code, Roboto Mono, monospace
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+
+extra_css:
+  - styles/custom.css
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - meta
+  - toc:
+      permalink: true
+  - tables
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Categories:
+    - Communication: category-comm.md
+    - Digital & Technology: category-digi.md
+    - Family Dynamics: category-fmly.md
+    - Foundational Parenting: category-found.md
+    - Global & Cultural: category-glob.md
+    - Gender-Specific: category-gndr.md
+    - Life Skills: category-life.md
+    - Mental Health: category-ment.md
+    - Miscellaneous: category-misc.md
+    - Parent Self-Development: category-prnt.md
+    - Special Needs: category-spec.md
+    - Teenagers: category-teen.md
+  - All Summaries: all-summaries.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/parentwise
+  generator: false

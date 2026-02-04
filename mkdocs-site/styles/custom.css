@@ -1,0 +1,67 @@
+/* ParentWise Custom Styles for MkDocs */
+:root {
+  --md-primary-fg-color: #7c5bff;
+  --md-primary-fg-color--light: #9a7fff;
+  --md-primary-fg-color--dark: #5d3fd9;
+  --md-accent-fg-color: #7c5bff;
+}
+
+/* Dark mode adjustments */
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #0f1116;
+  --md-default-fg-color: #ffffff;
+  --md-default-fg-color--light: #b4b9c8;
+  --md-default-fg-color--lighter: #6b7280;
+}
+
+/* Custom header styling */
+.custom-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.custom-header h1 {
+  color: var(--md-primary-fg-color);
+  margin-bottom: 0.5rem;
+}
+
+.custom-header .author {
+  color: var(--md-default-fg-color--light);
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+/* Tag styling */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.tag {
+  background: rgba(124, 91, 255, 0.1);
+  color: var(--md-primary-fg-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+}
+
+/* Summary card in category pages */
+.summary-card {
+  background: var(--md-code-bg-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--md-primary-fg-color);
+}
+
+.summary-card h3 {
+  margin-top: 0;
+}
+
+.summary-card .author {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.9rem;
+}

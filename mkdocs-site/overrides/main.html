@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if page.meta.title %}
+<div class="custom-header">
+    <h1>{{ page.meta.title }}</h1>
+    {% if page.meta.author %}
+    <p class="author">by {{ page.meta.author }}</p>
+    {% endif %}
+    {% if page.meta.tags %}
+    <div class="tags">
+        {% for tag in page.meta.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+{{ super() }}
+{% endblock %}
