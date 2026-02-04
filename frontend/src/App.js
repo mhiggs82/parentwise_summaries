@@ -2,7 +2,7 @@ import { useState, useEffect, createContext, useContext } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route, Link, useParams, useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Search, Book, Moon, Sun, ChevronRight, Download, ArrowLeft, Menu, X, BookOpen, Users, Sparkles, Tag } from "lucide-react";
+import { Search, Book, Moon, Sun, ChevronRight, ArrowLeft, Menu, X, BookOpen, Users, Sparkles, Tag } from "lucide-react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -35,29 +35,29 @@ const ThemeProvider = ({ children }) => {
 const useTheme = () => useContext(ThemeContext);
 
 // Category Icons mapping
+const CATEGORY_ICONS = {
+  COMM: "💬",
+  DIGI: "📱",
+  FMLY: "👨‍👩‍👧‍👦",
+  FOUND: "📚",
+  GLOB: "🌍",
+  GNDR: "⚡",
+  LIFE: "🌱",
+  MENT: "🧠",
+  MISC: "📖",
+  PRNT: "❤️",
+  SPEC: "✨",
+  TEEN: "🎓"
+};
+
 const getCategoryIcon = (code) => {
-  const icons = {
-    COMM: "💬",
-    DIGI: "📱",
-    FMLY: "👨‍👩‍👧‍👦",
-    FOUND: "📚",
-    GLOB: "🌍",
-    GNDR: "⚡",
-    LIFE: "🌱",
-    MENT: "🧠",
-    MISC: "📖",
-    PRNT: "❤️",
-    SPEC: "✨",
-    TEEN: "🎓"
-  };
-  return icons[code] || "📖";
+  return CATEGORY_ICONS[code] || "📖";
 };
 
 // Header Component
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
 
   return (
     <header className="header" data-testid="header">
@@ -81,7 +81,7 @@ const Header = () => {
             onClick={toggleTheme} 
             className="theme-toggle"
             data-testid="theme-toggle"
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
@@ -109,8 +109,8 @@ const Header = () => {
 };
 
 // Search Component
-const SearchBar = ({ onSearch, initialValue = "" }) => {
-  const [query, setQuery] = useState(initialValue);
+const SearchBar = ({ onSearch, initialValue }) => {
+  const [query, setQuery] = useState(initialValue || "");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -138,50 +138,63 @@ const SearchBar = ({ onSearch, initialValue = "" }) => {
 };
 
 // Category Card Component
-const CategoryCard = ({ category, index }) => (
-  <Link 
-    to={`/browse?category=${category.code}`} 
-    className={`category-card card-hover animate-fade-in-up stagger-${(index % 5) + 1}`}
-    data-testid={`category-card-${category.code}`}
-  >
-    <span className="category-icon">{getCategoryIcon(category.code)}</span>
-    <div className="category-info">
-      <h3 className="category-name">{category.name}</h3>
-      <p className="category-description">{category.description}</p>
-      <span className="category-count">{category.count} summaries</span>
-    </div>
-    <ChevronRight size={20} className="category-arrow" />
-  </Link>
-);
+const CategoryCard = ({ category, index }) => {
+  const iconEmoji = getCategoryIcon(category.code);
+  const delayClass = `stagger-${(index % 5) + 1}`;
+  
+  return (
+    <Link 
+      to={`/browse?category=${category.code}`} 
+      className={`category-card card-hover animate-fade-in-up ${delayClass}`}
+      data-testid={`category-card-${category.code}`}
+    >
+      <span className="category-icon">{iconEmoji}</span>
+      <div className="category-info">
+        <h3 className="category-name">{category.name}</h3>
+        <p className="category-description">{category.description}</p>
+        <span className="category-count">{category.count} summaries</span>
+      </div>
+      <ChevronRight size={20} className="category-arrow" />
+    </Link>
+  );
+};
 
 // Summary Card Component
-const SummaryCard = ({ summary, index }) => (
-  <Link 
-    to={`/summary/${summary.slug}`} 
-    className={`summary-card card-hover animate-fade-in-up stagger-${(index % 5) + 1}`}
-    data-testid={`summary-card-${summary.slug}`}
-  >
-    <div className="summary-category-badge">
-      <span>{getCategoryIcon(summary.category_code)}</span>
-      <span>{summary.category_name}</span>
-    </div>
-    <h3 className="summary-title">{summary.title}</h3>
-    <p className="summary-author">by {summary.author}</p>
-    {summary.key_principles && summary.key_principles.length > 0 && (
-      <div className="summary-principles">
-        {summary.key_principles.slice(0, 2).map((principle, i) => (
-          <span key={i} className="principle-tag">{principle}</span>
-        ))}
-        {summary.key_principles.length > 2 && (
-          <span className="principle-more">+{summary.key_principles.length - 2} more</span>
-        )}
+const SummaryCard = ({ summary, index }) => {
+  const iconEmoji = getCategoryIcon(summary.category_code);
+  const delayClass = `stagger-${(index % 5) + 1}`;
+  const principles = summary.key_principles || [];
+  const showPrinciples = principles.slice(0, 2);
+  const morePrinciples = principles.length > 2 ? principles.length - 2 : 0;
+  
+  return (
+    <Link 
+      to={`/summary/${summary.slug}`} 
+      className={`summary-card card-hover animate-fade-in-up ${delayClass}`}
+      data-testid={`summary-card-${summary.slug}`}
+    >
+      <div className="summary-category-badge">
+        <span>{iconEmoji}</span>
+        <span>{summary.category_name}</span>
       </div>
-    )}
-    <div className="summary-footer">
-      <span className="read-more">Read Summary <ChevronRight size={16} /></span>
-    </div>
-  </Link>
-);
+      <h3 className="summary-title">{summary.title}</h3>
+      <p className="summary-author">by {summary.author}</p>
+      {showPrinciples.length > 0 && (
+        <div className="summary-principles">
+          {showPrinciples.map((principle, i) => (
+            <span key={i} className="principle-tag">{principle}</span>
+          ))}
+          {morePrinciples > 0 && (
+            <span className="principle-more">+{morePrinciples} more</span>
+          )}
+        </div>
+      )}
+      <div className="summary-footer">
+        <span className="read-more">Read Summary <ChevronRight size={16} /></span>
+      </div>
+    </Link>
+  );
+};
 
 // Home Page
 const Home = () => {
@@ -194,11 +207,10 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [catRes, statsRes, summariesRes] = await Promise.all([
-          axios.get(`${API}/categories`),
-          axios.get(`${API}/stats`),
-          axios.get(`${API}/summaries?limit=6`)
-        ]);
+        const catRes = await axios.get(`${API}/categories`);
+        const statsRes = await axios.get(`${API}/stats`);
+        const summariesRes = await axios.get(`${API}/summaries?limit=6`);
+        
         setCategories(catRes.data);
         setStats(statsRes.data);
         setFeaturedSummaries(summariesRes.data.summaries);
@@ -226,6 +238,11 @@ const Home = () => {
     );
   }
 
+  const totalSummaries = stats?.total_summaries || 247;
+  const totalAuthors = stats?.total_authors || 200;
+  const totalCategories = stats?.total_categories || 12;
+  const displayCategories = categories.slice(0, 6);
+
   return (
     <div className="home-page" data-testid="home-page">
       {/* Hero Section */}
@@ -235,24 +252,27 @@ const Home = () => {
             <Sparkles size={16} />
             <span>Expert-Backed Parenting Insights</span>
           </div>
-          <h1 className="hero-title">Book Summaries for<br /><span className="gradient-text">Thoughtful Parents</span></h1>
+          <h1 className="hero-title">
+            Book Summaries for<br />
+            <span className="gradient-text">Thoughtful Parents</span>
+          </h1>
           <p className="hero-subtitle">
-            Access {stats?.total_summaries || 247} comprehensive book summaries covering communication, 
+            Access {totalSummaries} comprehensive book summaries covering communication, 
             mental health, teenagers, and more—all designed to help you raise confident, resilient children.
           </p>
           <SearchBar onSearch={handleSearch} />
           <div className="hero-stats">
             <div className="stat">
               <BookOpen size={20} />
-              <span><strong>{stats?.total_summaries || 247}</strong> Summaries</span>
+              <span><strong>{totalSummaries}</strong> Summaries</span>
             </div>
             <div className="stat">
               <Users size={20} />
-              <span><strong>{stats?.total_authors || 200}+</strong> Authors</span>
+              <span><strong>{totalAuthors}+</strong> Authors</span>
             </div>
             <div className="stat">
               <Tag size={20} />
-              <span><strong>{stats?.total_categories || 12}</strong> Categories</span>
+              <span><strong>{totalCategories}</strong> Categories</span>
             </div>
           </div>
         </div>
@@ -265,7 +285,7 @@ const Home = () => {
           <Link to="/categories" className="section-link">View All <ChevronRight size={16} /></Link>
         </div>
         <div className="categories-grid">
-          {categories.slice(0, 6).map((category, index) => (
+          {displayCategories.map((category, index) => (
             <CategoryCard key={category.code} category={category} index={index} />
           ))}
         </div>
@@ -315,7 +335,6 @@ const Browse = () => {
   const [categories, setCategories] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   const category = searchParams.get('category') || '';
   const search = searchParams.get('search') || '';
@@ -329,10 +348,8 @@ const Browse = () => {
         if (search) params.append('search', search);
         params.append('limit', '100');
 
-        const [summariesRes, categoriesRes] = await Promise.all([
-          axios.get(`${API}/summaries?${params.toString()}`),
-          axios.get(`${API}/categories`)
-        ]);
+        const summariesRes = await axios.get(`${API}/summaries?${params.toString()}`);
+        const categoriesRes = await axios.get(`${API}/categories`);
         
         setSummaries(summariesRes.data.summaries);
         setTotal(summariesRes.data.total);
@@ -361,13 +378,17 @@ const Browse = () => {
   };
 
   const currentCategory = categories.find(c => c.code === category);
+  let pageTitle = 'All Book Summaries';
+  if (currentCategory) {
+    pageTitle = currentCategory.name;
+  } else if (search) {
+    pageTitle = `Search: "${search}"`;
+  }
 
   return (
     <div className="browse-page" data-testid="browse-page">
       <div className="browse-header">
-        <h1 className="page-title">
-          {currentCategory ? currentCategory.name : search ? `Search: "${search}"` : 'All Book Summaries'}
-        </h1>
+        <h1 className="page-title">{pageTitle}</h1>
         <p className="page-subtitle">
           {total} {total === 1 ? 'summary' : 'summaries'} found
         </p>
@@ -511,13 +532,17 @@ const SummaryDetail = () => {
       <div className="error-page" data-testid="error-page">
         <Book size={64} />
         <h2>Summary Not Found</h2>
-        <p>The summary you're looking for doesn't exist.</p>
+        <p>The summary you are looking for does not exist.</p>
         <button className="btn-primary" onClick={() => navigate('/browse')}>
           Browse All Summaries
         </button>
       </div>
     );
   }
+
+  const iconEmoji = getCategoryIcon(summary.category_code);
+  const principles = summary.key_principles || [];
+  const tags = summary.tags || [];
 
   return (
     <div className="summary-page" data-testid="summary-page">
@@ -532,25 +557,25 @@ const SummaryDetail = () => {
             to={`/browse?category=${summary.category_code}`} 
             className="summary-category-link"
           >
-            {getCategoryIcon(summary.category_code)} {summary.category_name}
+            {iconEmoji} {summary.category_name}
           </Link>
           <h1 className="summary-page-title">{summary.title}</h1>
           <p className="summary-page-author">by {summary.author}</p>
           
-          {summary.key_principles && summary.key_principles.length > 0 && (
+          {principles.length > 0 && (
             <div className="summary-key-principles">
               <h4>Key Principles:</h4>
               <div className="principles-list">
-                {summary.key_principles.map((principle, i) => (
+                {principles.map((principle, i) => (
                   <span key={i} className="principle-tag">{principle}</span>
                 ))}
               </div>
             </div>
           )}
 
-          {summary.tags && summary.tags.length > 0 && (
+          {tags.length > 0 && (
             <div className="summary-tags">
-              {summary.tags.map((tag, i) => (
+              {tags.map((tag, i) => (
                 <span key={i} className="tag">{tag}</span>
               ))}
             </div>
