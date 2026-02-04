@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting It All Done - ParentWise Summary</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 1in;
+        }
+        
+        @media print {
+            body { font-size: 11pt; }
+            .no-print { display: none; }
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1d2e;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #7c5bff;
+        }
+        
+        .header .category {
+            font-size: 0.75rem;
+            color: #7c5bff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header h1 {
+            color: #7c5bff;
+            font-size: 1.75rem;
+            margin: 0.5rem 0;
+            line-height: 1.2;
+        }
+        
+        .header .author {
+            font-size: 1.1rem;
+            color: #4a5568;
+            font-style: italic;
+        }
+        
+        .tags {
+            margin-top: 1rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #f5f3f0;
+            color: #4a5568;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin: 0.125rem;
+        }
+        
+        .principles {
+            background: #f8f5ff;
+            border: 1px solid #7c5bff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .principles h4 {
+            color: #7c5bff;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .principles ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+        
+        h1 { font-size: 1.5rem; color: #1a1d2e; margin-top: 2rem; border-bottom: 1px solid #e8e5e0; padding-bottom: 0.5rem; }
+        h2 { font-size: 1.25rem; color: #7c5bff; margin-top: 1.5rem; }
+        h3 { font-size: 1.1rem; color: #1a1d2e; margin-top: 1.25rem; }
+        h4, h5, h6 { font-size: 1rem; color: #4a5568; margin-top: 1rem; }
+        
+        p { margin-bottom: 0.75rem; }
+        
+        ul, ol { margin-bottom: 0.75rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.25rem; }
+        
+        blockquote {
+            border-left: 3px solid #7c5bff;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #4a5568;
+            font-style: italic;
+        }
+        
+        code {
+            background: #f5f3f0;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-family: "SF Mono", Monaco, Consolas, monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: #f5f3f0;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+        }
+        
+        pre code { background: transparent; padding: 0; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+        th, td { border: 1px solid #e8e5e0; padding: 0.5rem; text-align: left; }
+        th { background: #f5f3f0; font-weight: 600; }
+        
+        hr { border: none; border-top: 1px solid #e8e5e0; margin: 1.5rem 0; }
+        
+        .footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e8e5e0;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.75rem;
+        }
+        
+        .print-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: #7c5bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .print-btn:hover { background: #5d3fd9; }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+    
+    <div class="header">
+        <div class="category">Miscellaneous</div>
+        <h1>Getting It All Done</h1>
+        <div class="author">by Harvard Business Review</div>
+        <div class="tags"><span class="tag">work-life-balance</span><span class="tag">parenting</span><span class="tag">time-management</span><span class="tag">productivity</span><span class="tag">flexible-work</span><span class="tag">family-dynamics</span><span class="tag">delegation</span><span class="tag">stress-management</span><span class="tag">parental-burnout</span></div>
+    </div>
+    
+    <div class="principles"><h4>Key Principles</h4><ul><li>values-driven-scheduling</li><li>agile-family-meetings</li><li>delegation-with-joy</li><li>direct-help-seeking</li><li>flexible-work-as-experiment</li><li>dropping-the-ball-intentionally</li><li>realistic-expectations</li><li>priority-alignment</li></ul></div>
+    
+    <div class="content">
+        <h1 id="part-1-book-analysis-framework">PART 1: Book Analysis Framework</h1>
+<h2 id="executive-summary">Executive Summary</h2>
+<p><strong>Thesis:</strong> Working parents can achieve greater effectiveness and fulfillment by applying professional management skills to home life, prioritizing ruthlessly, and reframing work-family integration as complementary rather than conflicting.</p>
+<p><strong>Unique Contribution:</strong> This collection moves beyond "balance" mythology to offer practical, evidence-based strategies for managing competing demands. It treats family management as a legitimate professional discipline requiring planning, delegation, and clear communication—not as a personal failing.</p>
+<p><strong>Target Outcome:</strong> Enable working parents to reduce guilt, increase intentionality about time allocation, and build sustainable systems that serve both career and family without requiring superhuman effort.</p>
+<h2 id="structural-overview">Structural Overview</h2>
+<p>The book organizes 22 articles across four sections:</p>
+<ol>
+<li>
+<p><strong>Strategy for Supper</strong> (Chapters 1-5): Applies business management principles to household operations—scheduling, family meetings, calendar coordination, negotiation, and support networks.</p>
+</li>
+<li>
+<p><strong>Say No to Doing Everything</strong> (Chapters 6-11): Addresses priority-setting through values alignment, rejects balance mythology, teaches delegation and help-seeking, and normalizes saying no.</p>
+</li>
+<li>
+<p><strong>Getting It All (Mostly) Done</strong> (Chapters 12-16): Provides tactical productivity solutions for remote work, family meals, pandemic constraints, school demands, and guilt management.</p>
+</li>
+<li>
+<p><strong>You Can't Be in Two Places at Once</strong> (Chapters 17-21): Tackles acute conflicts—flexible work negotiation, sick children, competing commitments, work crises, and family emergencies.</p>
+</li>
+</ol>
+<p><strong>Architecture Function:</strong> Each section builds from foundational mindset shifts to specific tactical implementation, allowing readers to enter at their comfort level while reinforcing core principles across contexts.</p>
+<h2 id="deep-insights-analysis">Deep Insights Analysis</h2>
+<h3 id="paradigm-shifts">Paradigm Shifts</h3>
+<p><strong>From Balance to Harmony:</strong> The book explicitly rejects work-life balance as a false metric. Instead, it proposes "four-way wins" where changes benefit self, family, work, and community simultaneously. This removes the zero-sum thinking that creates guilt.</p>
+<p><strong>From Perfection to Intentionality:</strong> Rather than achieving everything, the framework asks: What matters most to <em>this</em> family? This reframing eliminates comparison-based guilt and enables strategic trade-offs.</p>
+<p><strong>From Isolation to Systems:</strong> Working parenthood is presented not as a personal problem to solve alone but as a structural challenge requiring networks, delegation, and explicit communication.</p>
+<h3 id="implicit-assumptions">Implicit Assumptions</h3>
+<ul>
+<li><strong>Assumption 1:</strong> Parents have agency in their schedules and can negotiate flexibility. (Limitation: Assumes professional-class jobs; excludes hourly/shift workers.)</li>
+<li><strong>Assumption 2:</strong> Guilt stems from unrealistic expectations, not actual inadequacy. (Supported by psychology research but may underestimate real resource constraints.)</li>
+<li><strong>Assumption 3:</strong> Children benefit from parental modeling of boundaries and self-care. (Reflects contemporary parenting psychology; may conflict with cultural values emphasizing sacrifice.)</li>
+<li><strong>Assumption 4:</strong> Work and parenting skills are transferable. (Compelling but assumes similar cognitive demands; ignores emotional labor differences.)</li>
+</ul>
+<h3 id="second-order-implications">Second-Order Implications</h3>
+<ul>
+<li><strong>On Career Trajectory:</strong> Normalizing flexibility and boundaries may reduce visibility for promotion but increases retention and long-term performance. The book doesn't address this trade-off explicitly.</li>
+<li><strong>On Family Dynamics:</strong> Explicit communication about priorities and constraints may surface previously hidden resentments. The book assumes this is healthy but doesn't prepare readers for conflict escalation.</li>
+<li><strong>On Organizational Culture:</strong> If many employees adopt these practices, it could shift workplace norms—or create a two-tier system where flexible workers are seen as less committed.</li>
+</ul>
+<h3 id="tensions">Tensions</h3>
+<p><strong>Tension 1:</strong> The book advocates "dropping the ball" on non-essentials while simultaneously encouraging parents to be present at key moments. How do you know which moments matter without trying everything first?</p>
+<p><strong>Tension 2:</strong> Delegation requires trust and clear communication, but working parents often lack time to train others properly. The book assumes this investment pays off but doesn't quantify the upfront cost.</p>
+<p><strong>Tension 3:</strong> Values-driven scheduling assumes clarity about values, but many parents discover their values <em>through</em> the experience of working parenthood, not before.</p>
+<h2 id="practical-implementation">Practical Implementation</h2>
+<h3 id="five-most-impactful-concepts">Five Most Impactful Concepts</h3>
+<p><strong>1. Values-Driven Scheduling (Chapter 6)</strong>
+- <strong>Impact:</strong> Shifts decision-making from reactive guilt to proactive alignment.
+- <strong>Implementation:</strong> Block 2 hours to list categories (work, family, self, community), define achievement levels, identify essential rituals, then reverse-engineer calendar entries.
+- <strong>Barrier:</strong> Requires honest conversation with family about what they actually value, not what you assume they value.</p>
+<p><strong>2. Agile Family Meetings (Chapter 2)</strong>
+- <strong>Impact:</strong> Creates psychological safety for children to voice concerns and builds executive function through self-evaluation.
+- <strong>Implementation:</strong> 20-minute weekly meeting with three questions: What worked? What didn't? What will we work on?
+- <strong>Barrier:</strong> Requires consistency; first few weeks feel awkward; children may test boundaries.</p>
+<p><strong>3. Delegation with Joy (Chapter 9)</strong>
+- <strong>Impact:</strong> Moves from resentment-based task assignment to collaborative problem-solving.
+- <strong>Implementation:</strong> Frame task in higher context (why it matters to you), schedule dedicated conversation, make explicit ask, accept imperfect execution.
+- <strong>Barrier:</strong> Requires releasing control; initial effort exceeds doing it yourself.</p>
+<p><strong>4. Asking for Help Directly (Chapter 10)</strong>
+- <strong>Impact:</strong> Activates reciprocity and reduces isolation; research shows people <em>want</em> to help but need clear asks.
+- <strong>Implementation:</strong> Identify specific task, ask explicitly (not vaguely), accept alternative forms of help, express gratitude visibly.
+- <strong>Barrier:</strong> Triggers shame and vulnerability; requires practice to normalize.</p>
+<p><strong>5. Flexible Work as Experiment (Chapter 17)</strong>
+- <strong>Impact:</strong> Reduces manager anxiety and creates permission to iterate; frames arrangement as business decision, not personal favor.
+- <strong>Implementation:</strong> Propose 3-month trial with clear success metrics, involve team in planning, report back with data.
+- <strong>Barrier:</strong> Requires documentation and follow-through; assumes manager openness to change.</p>
+<h2 id="critical-assessment">Critical Assessment</h2>
+<h3 id="strengths">Strengths</h3>
+<ul>
+<li><strong>Evidence-Based:</strong> Draws on research from organizational psychology, neuroscience, and behavioral economics; cites specific studies.</li>
+<li><strong>Practical Specificity:</strong> Moves beyond platitudes to concrete scripts, templates, and step-by-step processes.</li>
+<li><strong>Diverse Perspectives:</strong> 22 contributors offer varied approaches; acknowledges that one-size-fits-all solutions don't exist.</li>
+<li><strong>Honest About Tradeoffs:</strong> Doesn't promise "having it all"; instead reframes success as alignment with values.</li>
+<li><strong>Inclusive of Crisis:</strong> Addresses acute situations (sick children, family emergencies, pandemic) alongside chronic challenges.</li>
+</ul>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li><strong>Class Assumptions:</strong> Assumes professional flexibility, childcare options, and financial cushion. Excludes hourly workers, single parents with limited resources, and those in rigid industries.</li>
+<li><strong>Cultural Specificity:</strong> Reflects American individualism and nuclear family structure; may not translate to cultures emphasizing extended family or collective decision-making.</li>
+<li><strong>Incomplete on Systemic Issues:</strong> Focuses on individual behavior change rather than advocating for policy solutions (paid leave, subsidized childcare, etc.).</li>
+<li><strong>Gender Dynamics Underexplored:</strong> While some chapters address gendered expectations, the book doesn't systematically examine how these strategies affect or reinforce gender roles.</li>
+<li><strong>Measurement Challenges:</strong> Offers few metrics for success beyond subjective feelings of control and alignment.</li>
+</ul>
+<h2 id="assumptions-specific-to-this-analysis">Assumptions Specific to This Analysis</h2>
+<ol>
+<li><strong>Assumption:</strong> The reader has some discretion over their schedule and can negotiate with employers. (Excludes precarious workers.)</li>
+<li><strong>Assumption:</strong> Family members are willing to engage in explicit communication about priorities. (Excludes families with significant conflict or communication barriers.)</li>
+<li><strong>Assumption:</strong> The reader's primary constraint is time/attention, not financial resources or access to childcare.</li>
+<li><strong>Assumption:</strong> Parenting and work are both sources of meaning, not just obligations. (Excludes those in survival mode.)</li>
+</ol>
+<hr />
+<h1 id="part-2-book-to-checklist-framework">PART 2: Book to Checklist Framework</h1>
+<h2 id="process-1-values-driven-schedule-creation">Process 1: Values-Driven Schedule Creation</h2>
+<p><strong>Purpose:</strong> Align calendar with stated priorities to reduce guilt and increase intentionality.</p>
+<p><strong>Prerequisites:</strong>
+- ✓ 2 uninterrupted hours for reflection
+- ✓ Access to calendar (digital or paper)
+- ✓ Willingness to discuss priorities with family members</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>🔑 <strong>List life categories</strong> you want to include: work, family, exercise, learning, social, alone time, hobbies, community.</li>
+<li>🔑 <strong>Define achievement level</strong> for each category (e.g., "gym 3x/week" vs. "train for marathon").</li>
+<li>⚠️ <strong>Identify essential rituals</strong> (family dinner 3x/week, weekly date night, Sunday planning meeting).</li>
+<li>🔑 <strong>Ask family members</strong> what they value most from you—don't assume.</li>
+<li><strong>Write the "why"</strong> for each priority; imagine yourself in 50 years reflecting on this choice.</li>
+<li><strong>Identify specific actions</strong> that ladder to each priority (e.g., "exercise" → "Monday 6:30am gym").</li>
+<li>↻ <strong>Block these actions</strong> on your calendar as recurring events; treat as non-negotiable.</li>
+<li><strong>Discuss with stakeholders</strong> (boss, partner, kids) how this affects them and what support you need.</li>
+</ol>
+<hr />
+<h2 id="process-2-agile-family-meeting-implementation">Process 2: Agile Family Meeting Implementation</h2>
+<p><strong>Purpose:</strong> Create psychological safety for family members to voice concerns and build shared problem-solving.</p>
+<p><strong>Prerequisites:</strong>
+- ✓ Commitment to weekly 20-minute meeting
+- ✓ All family members present (adjust for age/schedule)
+- ✓ Quiet space without distractions</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>🔑 <strong>Choose consistent day/time</strong> (e.g., Sunday 5pm); mark on calendar.</li>
+<li><strong>Open with ritual</strong> (drum tap, candle lighting, specific phrase) to signal transition.</li>
+<li>🔑 <strong>Ask three questions in order:</strong></li>
+<li>What worked well in our family this week?</li>
+<li>What didn't work well?</li>
+<li>What will we agree to work on this week?</li>
+<li><strong>Record answers</strong> (whiteboard, notebook, or voice memo).</li>
+<li>⚠️ <strong>Let children propose rewards/consequences</strong> for their commitments; resist overriding.</li>
+<li><strong>Acknowledge all contributions</strong> equally; no dismissing children's concerns.</li>
+<li>↻ <strong>Review previous week's commitments</strong> at start of next meeting; celebrate progress.</li>
+<li><strong>Adjust format</strong> as children age (younger: visual aids; older: open-ended discussion).</li>
+</ol>
+<hr />
+<h2 id="process-3-delegation-with-joy">Process 3: Delegation with Joy</h2>
+<p><strong>Purpose:</strong> Transfer tasks to others while maintaining relationships and ensuring completion.</p>
+<p><strong>Prerequisites:</strong>
+- ✓ Clear identification of task to delegate
+- ✓ Understanding of why task matters to you
+- ✓ Identified person capable of doing task
+- ✓ 15-30 minutes for dedicated conversation</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>🔑 <strong>Schedule dedicated conversation</strong> at neutral time (not during conflict or rush).</li>
+<li><strong>Provide context</strong> about why this task matters to you and your family (e.g., "I'm stressed and it's affecting our relationship").</li>
+<li>🔑 <strong>Make explicit ask:</strong> "I need you to [specific task] by [date/frequency]."</li>
+<li>⚠️ <strong>Avoid vague requests</strong> ("help more") or guilt-based framing ("nobody helps me").</li>
+<li><strong>Explain the higher purpose</strong> (e.g., "taking out recycling helps me feel in control").</li>
+<li><strong>Accept their method</strong> even if different from yours; focus on outcome, not process.</li>
+<li><strong>Express gratitude visibly</strong> when task is completed; acknowledge effort.</li>
+<li>↻ <strong>Check in monthly</strong> about whether arrangement is working; adjust as needed.</li>
+</ol>
+<hr />
+<h2 id="process-4-direct-help-seeking">Process 4: Direct Help-Seeking</h2>
+<p><strong>Purpose:</strong> Activate others' desire to help by removing uncertainty about what you need.</p>
+<p><strong>Prerequisites:</strong>
+- ✓ Identification of specific task(s) that would help
+- ✓ List of potential helpers
+- ✓ Clarity on what "done" looks like</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>🔑 <strong>Conduct forensic analysis</strong> of your to-do list; identify 2-3 items where help would provide significant relief.</li>
+<li><strong>Assess each item:</strong> Can someone do this without extensive supervision? Will it free up meaningful time?</li>
+<li>🔑 <strong>Choose specific person</strong> who has capacity and relevant skills.</li>
+<li><strong>Make explicit, specific request:</strong> "Would you be willing to [task] by [date]?" (Not: "Could you help me sometime?")</li>
+<li>⚠️ <strong>Avoid softening language</strong> ("if you have time," "only if you want to"); be direct.</li>
+<li><strong>Accept alternative forms of help</strong> (e.g., introduction instead of direct assistance).</li>
+<li><strong>Say thank you specifically</strong> and describe impact (e.g., "This freed up 3 hours for me to focus on X").</li>
+<li>↻ <strong>Ask same person again</strong> if they declined before; research shows they're more likely to say yes second time.</li>
+</ol>
+<hr />
+<h2 id="process-5-flexible-work-arrangement-proposal">Process 5: Flexible Work Arrangement Proposal</h2>
+<p><strong>Purpose:</strong> Negotiate alternative work schedule while demonstrating business value.</p>
+<p><strong>Prerequisites:</strong>
+- ✓ Clear definition of desired arrangement (remote, compressed week, job share, etc.)
+- ✓ Understanding of company policies and precedents
+- ✓ Analysis of impact on role, team, and performance
+- ✓ 30 minutes with manager</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>🔑 <strong>Define your goal:</strong> What are you trying to accomplish? (More family time, fewer distractions, reduced commute?)</li>
+<li><strong>Research company policy</strong> and whether precedent exists; don't assume you're first to ask.</li>
+<li><strong>Assess job fit:</strong> Can your role function under this arrangement? What are the constraints?</li>
+<li>🔑 <strong>Frame as experiment:</strong> "I'd like to try [arrangement] for 3 months to see if it works."</li>
+<li><strong>Consult your team</strong> before proposing; ask for input and incorporate suggestions.</li>
+<li>⚠️ <strong>Highlight organizational benefits</strong> over personal ones (productivity, client coverage, cost savings).</li>
+<li><strong>Propose trial period</strong> with clear success metrics and exit clause.</li>
+<li><strong>Get team input</strong> in writing; show manager you've addressed concerns.</li>
+<li>↻ <strong>After 3 months, report back</strong> with data on productivity, attendance, and team feedback.</li>
+<li><strong>Adjust or formalize</strong> based on results; be prepared to modify or return to original arrangement.</li>
+</ol>
+<hr />
+<h2 id="process-6-managing-competing-commitments">Process 6: Managing Competing Commitments</h2>
+<p><strong>Purpose:</strong> Make intentional choices when work and family obligations conflict, reducing guilt.</p>
+<p><strong>Prerequisites:</strong>
+- ✓ Clarity on personal values and family priorities
+- ✓ Understanding of job constraints
+- ✓ Communication with family about what matters most</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>🔑 <strong>Reflect in advance</strong> (not in crisis): What are your general principles for choosing work vs. family?</li>
+<li><strong>Consider four options</strong> before defaulting to all-or-nothing:</li>
+<li>Delegate (send someone else)</li>
+<li>Time-split (attend part of event)</li>
+<li>Virtual presence (call, video, text updates)</li>
+<li>Invest in advance (attend rehearsal instead of performance)</li>
+<li><strong>Ask family members</strong> what they actually need from you (not what you assume).</li>
+<li>⚠️ <strong>Avoid assuming worst-case</strong> reactions; most people are more understanding than you expect.</li>
+<li><strong>Make decision aligned with values</strong> (not based on guilt or others' expectations).</li>
+<li><strong>Communicate decision clearly</strong> to all parties; explain briefly why.</li>
+<li><strong>Find way to show care</strong> even if you can't be physically present.</li>
+<li>↻ <strong>Debrief after event</strong> with family; ask if your choice worked for them.</li>
+</ol>
+<hr />
+<h2 id="process-7-sick-child-management">Process 7: Sick Child Management</h2>
+<p><strong>Purpose:</strong> Minimize disruption to work and family when child is ill.</p>
+<p><strong>Prerequisites:</strong>
+- ✓ Backup childcare plan identified (grandparent, sitter, partner)
+- ✓ Pediatrician contact info and payment on file
+- ✓ "Sick-child go bag" stocked with medicines, comfort items
+- ✓ Communication with manager about sick-child protocol</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>🔑 <strong>Acknowledge inevitability:</strong> Children get 8-10 colds/year; plan for this.</li>
+<li><strong>Develop backup plan:</strong> Who covers childcare? When? For how long?</li>
+<li><strong>Communicate plan to boss</strong> before crisis: "If Jordan gets sick, my mother covers until 3pm, then I work from home."</li>
+<li>⚠️ <strong>Control controllables:</strong> Ensure backup caregiver has medicine, knows dosages, has comfort items.</li>
+<li><strong>Make pediatrician an ally:</strong> Confirm early/late hours, payment on file, willingness to FaceTime.</li>
+<li><strong>Budget for emergency resources:</strong> Pharmacy delivery, Uber, backup sitter—allocate annual "emergency fund."</li>
+<li><strong>Stay connected professionally</strong> via email/Slack; avoid social media.</li>
+<li>↻ <strong>If illness is chronic/acute, alert organization</strong> (not just manager) for support and accommodations.</li>
+<li><strong>Don't transmit stress to child;</strong> reassure them calmly.</li>
+</ol>
+<hr />
+<h2 id="process-8-family-crisis-communication">Process 8: Family Crisis Communication</h2>
+<p><strong>Purpose:</strong> Manage information flow and expectations during acute family emergency while maintaining work performance.</p>
+<p><strong>Prerequisites:</strong>
+- ✓ Clarity on what to disclose and to whom
+- ✓ Identification of trusted confidants at work
+- ✓ Understanding of family's privacy preferences
+- ✓ Self-care plan in place</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>🔑 <strong>Decide what to disclose:</strong> Is issue public (death, visible illness) or private? Consider child's privacy.</li>
+<li><strong>Be first to inform</strong> trusted colleagues/manager; don't let rumors spread.</li>
+<li>⚠️ <strong>Avoid oversharing</strong> with boss; provide context without excessive detail.</li>
+<li><strong>Clarify what you need:</strong> "I need time off" vs. "I need flexibility" vs. "I need understanding."</li>
+<li><strong>Set boundaries:</strong> "I'm not ready to discuss this" or "I prefer not to receive advice right now."</li>
+<li>🔑 <strong>Establish daily self-care ritual</strong> (non-negotiable, even if 10 minutes).</li>
+<li><strong>Lean on partner/trusted friends</strong> to divide emotional and practical labor.</li>
+<li><strong>Seek professional support</strong> (therapy, coaching) if crisis is significant.</li>
+<li>↻ <strong>Check in with family</strong> about what's working and what needs adjustment.</li>
+<li><strong>Mark end of acute phase</strong> with ritual (dinner, conversation) to close chapter.</li>
+</ol>
+<hr />
+<h1 id="suggested-next-step">Suggested Next Step</h1>
+<p><strong>Immediate Action:</strong> This week, identify one area where you feel most overwhelmed (work, family meals, school demands, or competing commitments). Block 90 minutes to list your current approach, identify what's not working, and choose one process from Part 2 that addresses it. Schedule the first step (e.g., book the family meeting, draft the flexible work proposal, or identify one task to delegate). Don't try to implement everything; start with the one change that would reduce the most guilt or free the most time.</p>
+    </div>
+    
+    <div class="footer">
+        <p>ParentWise Book Summaries • FOCUSED • EMPATHETIC • EXPERT-BACKED</p>
+    </div>
+</body>
+</html>
