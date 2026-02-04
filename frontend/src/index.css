@@ -345,3 +345,14 @@ a:hover {
   background: var(--primary-purple);
   color: white;
 }
+
+/* Hide Emergent branding */
+[data-emergent-badge],
+.emergent-badge,
+a[href*="emergent"] img,
+div[style*="Made with Emergent"],
+iframe[src*="emergent"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
