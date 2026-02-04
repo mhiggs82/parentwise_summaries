@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: parentwise-mongodb
+    restart: unless-stopped
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=parentwise
+    networks:
+      - parentwise-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: parentwise-backend
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017
+      - DB_NAME=parentwise
+      - CORS_ORIGINS=*
+    depends_on:
+      - mongodb
+    volumes:
+      - ./Docs:/app/data/summaries:ro
+    networks:
+      - parentwise-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_BACKEND_URL=${DOMAIN_URL:-http://localhost}/api
+    container_name: parentwise-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - parentwise-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: parentwise-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./output_pdfs:/var/www/pdfs:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - parentwise-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  parentwise-network:
+    driver: bridge
