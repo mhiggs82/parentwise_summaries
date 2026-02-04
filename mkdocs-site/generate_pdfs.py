@@ -1,214 +1,31 @@
 #!/usr/bin/env python3
 """
 PDF Generation Script for ParentWise Book Summaries
-Uses WeasyPrint to generate styled PDFs from markdown files.
+Uses Pandoc (if available) to generate PDFs from markdown files.
+
+PREREQUISITES:
+- Pandoc: https://pandoc.org/installing.html
+- XeLaTeX (for custom fonts): Install TeX Live
+  - macOS: brew install --cask mactex
+  - Windows: https://www.tug.org/texlive/
+  - Linux: sudo apt install texlive-xetex texlive-fonts-recommended
+
+If Pandoc is not available, this script generates HTML files that can be
+printed to PDF using a browser.
 """
 
 import os
 import re
 import yaml
 import markdown
+import subprocess
+import shutil
 from pathlib import Path
-from weasyprint import HTML, CSS
-from weasyprint.text.fonts import FontConfiguration
 
 # Configuration
 INPUT_DIR = Path("/app/backend/data/summaries")
 OUTPUT_DIR = Path("/app/output_pdfs")
-
-# ParentWise CSS for PDFs
-PDF_CSS = """
-@page {
-    size: letter;
-    margin: 1in;
-    @top-center {
-        content: "ParentWise Book Summaries";
-        font-size: 10pt;
-        color: #6b7280;
-    }
-    @bottom-center {
-        content: counter(page);
-        font-size: 10pt;
-        color: #6b7280;
-    }
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-size: 11pt;
-    line-height: 1.6;
-    color: #1a1d2e;
-    max-width: 100%;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 2em;
-    padding-bottom: 1.5em;
-    border-bottom: 2px solid #7c5bff;
-}
-
-.header h1 {
-    color: #7c5bff;
-    font-size: 24pt;
-    margin-bottom: 0.25em;
-    line-height: 1.2;
-}
-
-.header .author {
-    font-size: 14pt;
-    color: #4a5568;
-    font-style: italic;
-}
-
-.header .category {
-    font-size: 10pt;
-    color: #7c5bff;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-top: 0.5em;
-}
-
-h1 {
-    font-size: 18pt;
-    color: #1a1d2e;
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
-    page-break-after: avoid;
-}
-
-h2 {
-    font-size: 14pt;
-    color: #7c5bff;
-    margin-top: 1.25em;
-    margin-bottom: 0.5em;
-    page-break-after: avoid;
-}
-
-h3 {
-    font-size: 12pt;
-    color: #1a1d2e;
-    margin-top: 1em;
-    margin-bottom: 0.5em;
-    page-break-after: avoid;
-}
-
-h4, h5, h6 {
-    font-size: 11pt;
-    color: #4a5568;
-    margin-top: 0.75em;
-    margin-bottom: 0.25em;
-}
-
-p {
-    margin-bottom: 0.75em;
-    text-align: justify;
-}
-
-ul, ol {
-    margin-bottom: 0.75em;
-    padding-left: 1.5em;
-}
-
-li {
-    margin-bottom: 0.25em;
-}
-
-blockquote {
-    border-left: 3px solid #7c5bff;
-    padding-left: 1em;
-    margin: 1em 0;
-    color: #4a5568;
-    font-style: italic;
-}
-
-code {
-    background: #f5f3f0;
-    padding: 0.1em 0.3em;
-    border-radius: 3px;
-    font-family: "SF Mono", Monaco, Consolas, monospace;
-    font-size: 10pt;
-}
-
-pre {
-    background: #f5f3f0;
-    padding: 1em;
-    border-radius: 6px;
-    overflow-x: auto;
-    font-size: 9pt;
-}
-
-pre code {
-    background: transparent;
-    padding: 0;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1em 0;
-    font-size: 10pt;
-}
-
-th, td {
-    border: 1px solid #e8e5e0;
-    padding: 0.5em;
-    text-align: left;
-}
-
-th {
-    background: #f5f3f0;
-    font-weight: 600;
-}
-
-hr {
-    border: none;
-    border-top: 1px solid #e8e5e0;
-    margin: 1.5em 0;
-}
-
-strong {
-    color: #1a1d2e;
-}
-
-a {
-    color: #7c5bff;
-    text-decoration: none;
-}
-
-/* Key principles box */
-.principles {
-    background: #f8f5ff;
-    border: 1px solid #7c5bff;
-    border-radius: 8px;
-    padding: 1em;
-    margin: 1em 0;
-}
-
-.principles h4 {
-    color: #7c5bff;
-    margin-top: 0;
-}
-
-.principles ul {
-    margin-bottom: 0;
-}
-
-/* Tags */
-.tags {
-    margin: 0.5em 0;
-}
-
-.tag {
-    display: inline-block;
-    background: #f5f3f0;
-    color: #4a5568;
-    padding: 0.2em 0.5em;
-    border-radius: 3px;
-    font-size: 9pt;
-    margin-right: 0.25em;
-}
-"""
+HTML_DIR = Path("/app/output_html")
 
 # Category mappings
 CATEGORY_NAMES = {
@@ -226,6 +43,184 @@ CATEGORY_NAMES = {
     "TEEN": "Teenagers"
 }
 
+# HTML template for print-ready documents
+HTML_TEMPLATE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} - ParentWise Summary</title>
+    <style>
+        @page {{
+            size: letter;
+            margin: 1in;
+        }}
+        
+        @media print {{
+            body {{ font-size: 11pt; }}
+            .no-print {{ display: none; }}
+        }}
+        
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1d2e;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }}
+        
+        .header {{
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #7c5bff;
+        }}
+        
+        .header .category {{
+            font-size: 0.75rem;
+            color: #7c5bff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }}
+        
+        .header h1 {{
+            color: #7c5bff;
+            font-size: 1.75rem;
+            margin: 0.5rem 0;
+            line-height: 1.2;
+        }}
+        
+        .header .author {{
+            font-size: 1.1rem;
+            color: #4a5568;
+            font-style: italic;
+        }}
+        
+        .tags {{
+            margin-top: 1rem;
+        }}
+        
+        .tag {{
+            display: inline-block;
+            background: #f5f3f0;
+            color: #4a5568;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin: 0.125rem;
+        }}
+        
+        .principles {{
+            background: #f8f5ff;
+            border: 1px solid #7c5bff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }}
+        
+        .principles h4 {{
+            color: #7c5bff;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }}
+        
+        .principles ul {{
+            margin: 0;
+            padding-left: 1.25rem;
+        }}
+        
+        h1 {{ font-size: 1.5rem; color: #1a1d2e; margin-top: 2rem; border-bottom: 1px solid #e8e5e0; padding-bottom: 0.5rem; }}
+        h2 {{ font-size: 1.25rem; color: #7c5bff; margin-top: 1.5rem; }}
+        h3 {{ font-size: 1.1rem; color: #1a1d2e; margin-top: 1.25rem; }}
+        h4, h5, h6 {{ font-size: 1rem; color: #4a5568; margin-top: 1rem; }}
+        
+        p {{ margin-bottom: 0.75rem; }}
+        
+        ul, ol {{ margin-bottom: 0.75rem; padding-left: 1.5rem; }}
+        li {{ margin-bottom: 0.25rem; }}
+        
+        blockquote {{
+            border-left: 3px solid #7c5bff;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #4a5568;
+            font-style: italic;
+        }}
+        
+        code {{
+            background: #f5f3f0;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-family: "SF Mono", Monaco, Consolas, monospace;
+            font-size: 0.9em;
+        }}
+        
+        pre {{
+            background: #f5f3f0;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+        }}
+        
+        pre code {{ background: transparent; padding: 0; }}
+        
+        table {{ width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }}
+        th, td {{ border: 1px solid #e8e5e0; padding: 0.5rem; text-align: left; }}
+        th {{ background: #f5f3f0; font-weight: 600; }}
+        
+        hr {{ border: none; border-top: 1px solid #e8e5e0; margin: 1.5rem 0; }}
+        
+        .footer {{
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e8e5e0;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.75rem;
+        }}
+        
+        .print-btn {{
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: #7c5bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }}
+        
+        .print-btn:hover {{ background: #5d3fd9; }}
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">Print / Save PDF</button>
+    
+    <div class="header">
+        <div class="category">{category}</div>
+        <h1>{title}</h1>
+        <div class="author">by {author}</div>
+        {tags_html}
+    </div>
+    
+    {principles_html}
+    
+    <div class="content">
+        {content}
+    </div>
+    
+    <div class="footer">
+        <p>ParentWise Book Summaries • FOCUSED • EMPATHETIC • EXPERT-BACKED</p>
+    </div>
+</body>
+</html>
+"""
+
 def parse_frontmatter(content):
     """Parse YAML frontmatter from markdown content"""
     match = re.match(r'^---\n(.*?)\n---\n(.*)$', content, re.DOTALL)
@@ -240,20 +235,27 @@ def parse_frontmatter(content):
     
     return metadata, body.strip()
 
-def generate_pdf(filepath, output_dir):
-    """Generate a PDF from a markdown file"""
+def check_pandoc():
+    """Check if Pandoc is available"""
+    try:
+        result = subprocess.run(['pandoc', '--version'], capture_output=True, text=True)
+        return result.returncode == 0
+    except FileNotFoundError:
+        return False
+
+def generate_html(filepath, output_dir):
+    """Generate a print-ready HTML file from a markdown file"""
     try:
         content = filepath.read_text(encoding='utf-8')
         metadata, body = parse_frontmatter(content)
         
-        # Extract info
         title = metadata.get('title', filepath.stem)
         author = metadata.get('author', 'Unknown Author')
         
         # Get category
         category_match = re.match(r'^([A-Z]+)-\d+', filepath.name)
         category_code = category_match.group(1) if category_match else metadata.get('category_code', 'MISC')
-        category_name = CATEGORY_NAMES.get(category_code, category_code)
+        category = CATEGORY_NAMES.get(category_code, category_code)
         
         key_principles = metadata.get('key_principles', [])
         tags = metadata.get('tags', [])
@@ -278,50 +280,53 @@ def generate_pdf(filepath, output_dir):
                 tags_html += f'<span class="tag">{t}</span>'
             tags_html += '</div>'
         
-        # Build full HTML
-        html_content = f"""
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>{title}</title>
-</head>
-<body>
-    <div class="header">
-        <div class="category">{category_name}</div>
-        <h1>{title}</h1>
-        <div class="author">by {author}</div>
-        {tags_html}
-    </div>
-    {principles_html}
-    {body_html}
-</body>
-</html>
-"""
-        
-        # Generate PDF
-        font_config = FontConfiguration()
-        css = CSS(string=PDF_CSS, font_config=font_config)
+        # Generate HTML
+        html_content = HTML_TEMPLATE.format(
+            title=title,
+            author=author,
+            category=category,
+            content=body_html,
+            tags_html=tags_html,
+            principles_html=principles_html
+        )
         
         # Create safe filename
         safe_name = re.sub(r'[^\w\s\-]', '', filepath.stem)
         safe_name = re.sub(r'\s+', '-', safe_name)[:80]
-        pdf_path = output_dir / f"{safe_name}.pdf"
+        html_path = output_dir / f"{safe_name}.html"
         
-        HTML(string=html_content).write_pdf(pdf_path, stylesheets=[css], font_config=font_config)
-        
-        return pdf_path
+        html_path.write_text(html_content, encoding='utf-8')
+        return html_path
         
     except Exception as e:
-        print(f"Error generating PDF for {filepath.name}: {e}")
+        print(f"Error generating HTML for {filepath.name}: {e}")
         return None
 
 def main():
-    # Create output directory
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    print("=" * 60)
+    print("ParentWise PDF/HTML Generation Script")
+    print("=" * 60)
     
-    print(f"Generating PDFs from {INPUT_DIR}...")
-    print(f"Output directory: {OUTPUT_DIR}")
+    # Check for Pandoc
+    has_pandoc = check_pandoc()
+    
+    if has_pandoc:
+        print("✓ Pandoc is available - PDF generation possible")
+        print("  Run with: pandoc input.md -o output.pdf --pdf-engine=xelatex")
+    else:
+        print("✗ Pandoc not found - generating print-ready HTML files instead")
+        print("  Install Pandoc for direct PDF generation:")
+        print("  - macOS: brew install pandoc")
+        print("  - Windows: choco install pandoc")
+        print("  - Linux: sudo apt install pandoc")
+    
+    print()
+    
+    # Create output directory
+    HTML_DIR.mkdir(parents=True, exist_ok=True)
+    
+    print(f"Input directory: {INPUT_DIR}")
+    print(f"Output directory: {HTML_DIR}")
     print()
     
     success_count = 0
@@ -334,23 +339,28 @@ def main():
         if filepath.name == 'qa_summary.txt':
             continue
         
-        print(f"[{i}/{total}] Processing: {filepath.name[:60]}...", end=" ")
+        print(f"[{i}/{total}] {filepath.name[:50]}...", end=" ")
         
-        pdf_path = generate_pdf(filepath, OUTPUT_DIR)
+        html_path = generate_html(filepath, HTML_DIR)
         
-        if pdf_path:
-            print(f"✓ Created")
+        if html_path:
+            print("✓")
             success_count += 1
         else:
-            print(f"✗ Failed")
+            print("✗")
             error_count += 1
     
     print()
     print("=" * 60)
-    print(f"PDF Generation Complete!")
+    print(f"Generation Complete!")
     print(f"  Successful: {success_count}")
     print(f"  Failed: {error_count}")
-    print(f"  Output directory: {OUTPUT_DIR}")
+    print(f"  Output: {HTML_DIR}")
+    print()
+    print("To create PDFs:")
+    print("  1. Open any HTML file in a web browser")
+    print("  2. Click 'Print / Save PDF' button or press Ctrl+P")
+    print("  3. Select 'Save as PDF' as the destination")
 
 if __name__ == "__main__":
     main()
