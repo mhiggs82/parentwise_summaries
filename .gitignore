@@ -52,6 +52,15 @@ __pycache__/
 venv/
 .venv/
 
+# MkDocs build output (can be regenerated)
+mkdocs-site/site/
+
+# Generated HTML files (can be regenerated)
+output_html/
+
+# Duplicate data (already in /Docs)
+backend/data/summaries/
+
 # Development tools
 chainlit.md
 .chainlit
